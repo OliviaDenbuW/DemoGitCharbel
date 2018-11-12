@@ -1,0 +1,194 @@
+BYGGSERVER:
+	- Varför vill man ha byggserver?
+	Man försöker elimeinera fel som uppstår av människor
+
+	(Lyssna begrepp)
+	Iden med byggserver är att det ska bli samma sak varje gång man bygger. Börjar vid incheckade koden:
+	Om vi har en utvec med en maskrin och så har vi VS (för att kompilerar källkoden), ur VS ramlar ett paket ut som vi byggt.
+	VAD HÄNDER NÄR VI HAR TVÅ UTVEC I DET HÄR? Den andra har också en folder med koden på sin dator, visual net, när vijkompilerar kommer ett paket
+	Blir oftast rätt, men ibladn ...
+
+	Det vi inför när vi är TVÅ så inför vi källhantering. För att sammarbeta har vi GIT eller gnt annat och commitar källkoden till git (pushar), sen
+	syncar vi så vi hänmtar hem källkoden till vår egna dator.
+
+	Byggautomatisrring handlar om (lyssna byggau 4.15):
+	Eftersom samma maskin blir det alltid samma resultat. Varje gång vi bygger så hämtar vi en this.commit/this.version o lägger på hårddisken.
+	Vi kör ett skript som anropar ms.build (buildServer) som bygger detta åt...
+	Resultatet blir samma varje gång
+	Buildserver är första steget till att få bra kod.
+	Om man har oliak verioner i programmet så har man oliak byggservrar för resp version (som fortsätter bygga på det Vis15)
+	För Vis17 gör man en ny byggserver.
+
+	COnfigiurationen av byggservern är också en del av det som definerar vad som trillar ut ur VS.
+	Resultatet vi kompilserat, exe, brukar man kalla Artifact (det man byggt)
+	
+	Resultat = Artifact (det man byggt)
+
+	KÖR BYGGSERVERN:
+	Det man gör är en specifik commit, vilket betyder att vi har en viss version av källkoden (viss Version av källkoden (vår indata till byggservern))
+	
+	UPPGIFTER:
+	Fler än att bara kompiliera
+
+	Från skriptet blir det en output (artifakter), filerna vi får ut måste på ngt sätt produceras
+	Publicera = Lägg en mapp ngn stans 
+
+	KLART VAD BYGGSERVER GÖR OVAN
+
+	GITHUB TJÄNST, ELLER ANNAN TJÄNST: (Tjänst 12.14)
+	Man kan skicka en impuls
+	På github programmerar man in så varje gång man gör commit till masterbranchen så gör git ett anrop till byggservern och sen ställer man in så githuub 
+	anropar webapiet varje gång..
+	WebHooK: varje gång det commer en kommit ställ in denna url..(??)
+	Git lägger på extar parametrar, ex checksummar, 
+	Då kan man använda impulsen frö att automatiskt sätta igång det här byggskriptet, lägger upp i db och så har man en kö där. Ofta har byggservern
+	ett managment interface där man kan se alla projekt, se en lista på alla saker den byggt
+	Ofta en db med saker som ska bygga
+	En byggserver som betar av
+	Man kan ha massor av byggservrar, och sen en KOntrollPanel + Db som styr byggservern (lyssna tjänster från 15.36)
+
+*************************************************
+EXEMPEL BYGGAUTOMATISERING
+*************************************************
+	BYGGAUTOMATISERING:
+		- Tjänster
+		- Mjukvara
+
+	EXEMPEL PÅ APPLIKATIONER SOM GÖR DETTA (MJUKVAROR EX):
+	- Jenkins:
+	- TeamCity
+	
+	EXEMPEL PÅ TJÄNSTER SOM GÖR DETTA:
+	- AppVeyor
+	- VSTS -> Azure DevOps
+	- Trevis CI
+
+	ANtingen köpa en tjänst (Lyssna jömf tjänster + mjukvara 18.50)
+
+*************************************************
+HUR SÄTTER MAN UPP DETTA:
+*************************************************
+	CONTINHOUS:
+		- GitHub (där han publicerar källkoden)
+		- AppVeyor
+
+	Sync i VS efetr att ha gjort ändring i github.com
+
+
+
+
+*************************************************
+APPVEYOR
+*************************************************
+Första steget i all byggautomatisering är att gå till sitt repo och hämta hem koden.
+I appVeyor måste jag välja var jag ska hämta källkoden (Cloud). (lyssna AppVeyor 8.10)
+Talar om för proj att det jobbar med git:
+	SETTINGS i appVeyor
+	- Build hur kompilerar vi
+	- ARtifaktier: vilka filer ska vi spara på efter bygget
+	etc...
+	- Deployment steg finns också
+	GENERAL:
+		- Byggnr: Börjar på 1, varje gång man försöker bygger den upp till 2.
+			Semantic Version: Major, Minor, Patch: Alla nuget packet är versionshanterade med detta. 2.0.0
+			Patchnr = Byggnr 0 (sista)
+			Minornr = När man gör ny release med ny feature 0
+			Major = Kickar upp en nivå när det inte längre är bakåtkompatibelt 2
+
+		1:a apiet har ändrats
+		2:a ny funktionalitet
+		3:e varje gång vi ändrat i koden
+
+		- Build version format: 1.0.2 andra gången (1.0{build} - så han gjorde första gången)
+
+		BYGGER: (Lyssna 16)
+		Agenten börjar med git clone och hämtar hem källkoden som ska byggas och lägger det lokalt
+		Drar igång ms.build
+		Har trillat ut en StudentEnumeratour.exe fil
+		Laddar ner alla nugetpaket
+		Den hitttar testen och kör testmotorn.
+		
+		NO TESTS AVAILABLE:
+		Måste lägga till ett nugetpacket
+		Använder vstest.console för att köra testerna (googling pratar om det)
+
+			SETTINGS:
+			Envirosments: VS-17
+			FInns massa virituella maskiner som innehåller olika verktyg. Ändra + spara --> Testa igen
+
+		IDEEN: Varje gång vi kör.. (lyssna 21.20)
+			Sätta upp automatiseringen: Jämf att man manuellt kan sätta upp det 4H, bygga testautomatisering för dessa fyra timmar
+			tar en vecka, men efter detta kommer varje gång man bygger att spara 4H arbete --> Sparar tid framåt
+
+		FÄRDIG BYGGT: ALlt lyser grönt
+			När man kör i consol, så får man ut en rapport på vad som kommit ut.
+
+		VILL INTE RELEASA DEBUG:
+		FInns inga artifakter (det måste man konfigurera)
+		Debugversion vill vi inte releasa
+			SETTINGS:
+			Build: Configur = Release configuration (ersätter det som kommer från vs (vi hade valt debug i VS)) + save
+			Tests: Test assemlies: Auto disc
+				Test cat: All
+			Artifacts: Lägg in path till det man vill spara till
+				Type: Auto
+				DepName: StundentEnumerator.exe
+
+			KÖR IGEN: Bygger release versionen. VI tar exe filen vi byggt o spara den som en artifakt
+
+		BYGG SUCCESS:
+			Artifakterna: En exe fil som vi kan ladda ner och köra. 
+			Drar in exe i powershell
+
+		BYGGA UT REGISTERSTUDENTS:
+			Vi vill lägga till en student: HUR GÖR MAN DET?
+			--> Ny branch (döp med gemener)
+				feature/add-student-charbel
+
+		1. SKapa klass CharbelStudent : Person + impelemnt abstract klass SaYGoodMornig()
+		2. RegisterStudents: repo.Add(new CharbelStudent());
+		3. (Om snyggt) Gör test för det: TestRegisterStudents()
+			Prograsm.RegisterStudent(repo) //Act
+			int count = 2; //Arrange
+		4. LÄgg till ny testKlass: CharbelStudnetsTests
+			TestMetod: TestSayGoodMorning
+			//Arrange var student = new CHarbelStudent()
+			//Act var result = student.SayGOodmorning)
+			//Assert Assert.IsNull (lyssna sammanf 35)
+
+		PUSHAR UPP FEATURE/BRANCHEN FRÅN VS:
+		Han har ställt in att inte bygga (Settings ställde in att bara bygga när man checkade in i master)
+		GIT:
+		För att få in en branch till master: 
+			1. Add Charbel Student and tests (från VS)
+			ALLTID KOMPILERAR + KÖRA ALLA TESTER INNNA COMMIT. Då kan jag göra commit and sync
+
+
+		GIT:
+		Nu borde finnas ngt i git
+		Skapar pull request: Då säger den att här har vi en massa filer som ändrat sig och vi ser att det gå att merga,
+			men den märker att vi håller på att göra commit till masterbraxcnh och då gör den unittester automatiskt av sig själv
+			(lyssna Pushar upp branchen 39.16)
+			Nu vet vi att alla unittester gick igenom (finns länk till bygget)
+			Nu har den byggt en .... och kört alla tester (charbelTest gick igenom), trillade ut en rtifact om man ville testa(??)
+			(Lyssna samman 44.07)
+			DET ÄR DET SOM ÄR CONTINOUS INTEGRATION
+
+
+			SETTINGS I GIT:
+			- Kan ställa in saker i mitt proj. ex lägga till BranchProtectionRule. Require pull re befoer merging (branches)
+			- Require status checks to pass before (så ngn måste göra code review)
+				Då märker vi på vår pullrequest att detinte går. Review required
+				-Charbel gjorde review och nu kan man göra en merge Confirm merge i master branchen och detta triggar vad??
+				KOmmer bygga detta i masterbranchen. SKulle kunna ställa in att varje gång jag bygger i master kommer ett mail
+				till alla chefer som säger att det finns ny version
+
+
+
+	BEGREPP:
+	1. Byggserver
+	2. Artifact
+	3. Byggskript
+	4. COde coverage: Siffras på hur många rader i koden passerar testen i förhållande till antal rader i koden 82.61% (JÄTTEBRA(!!!!!!!!!!!!!!))
+			Om man börjar mäta den här siffran och sätter upp som mål att siffran aldrig minskar utan bara blir större.
+			Kan hugga ut en liten del av sitt projekt som man gör test av(test conevrage ökar lite då, little by little)

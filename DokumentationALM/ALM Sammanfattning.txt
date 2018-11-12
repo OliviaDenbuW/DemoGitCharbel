@@ -1,0 +1,6 @@
+1. ALM-kedjan:
+	- Versionshantering
+	- Byggautomatisering
+	- Testautomatisering
+	- Artifaktpublicering
+	- Deploy

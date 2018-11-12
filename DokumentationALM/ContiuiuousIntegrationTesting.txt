@@ -1,0 +1,309 @@
+**********************************************************************
+TESTNING AV MJUKVARA:
+**********************************************************************
+
+Färdigkod som kör programmet, men utanför programmet (enhets(UnitTesting)) och integrationstestning)
+
+	1. TYPER AV TESTER:	
+		- UnitTesting(enhetsTester): Testar en funktion/en enhete (helst så loiten som möjligt, kanske bara en funktion). Testar fristående del av systemet/komponent/klass
+						- En klass så testar vi en funktion.
+		- Integrationstestning: Testar systemet som helhet, hut alla klasser funkgerar ihop. Kan kräva att man testar hela systemet som en enhet
+					NUnit/XUnit (ramverk som kan användas för integration och unit)
+
+				SKILLNAD UNIT & INTEGRATION:
+				- Unit går snabbt att köra. Varje gång jag komplierar kan jag testa unittester o . Körs hela tiden
+
+				- INtegration skulle gå att köra varje gång man kompilerar, men ofta testar man systyemet sittter ihop o testar
+				ex att db kan prata med datalagret, elr om man har en mailserver. Hur klasser pratar med andra system? Varje gång man
+				checkar in till en byggserver elr kanske varje månad
+		
+		- UAT (User Acceptance Test): Verksamhetstester/användartester:
+			VAD ÄR DET? Ofta användarna som har krav som ska uppfyllas, tex att knappen är på rätt ställe/undangömd
+					Kunden säger att du har tolkat kraven rätt
+
+		- RegretionsTest: Test att man bibehåller funktionallitet
+				När man intergrerar nya features i en produkt måste man se att de gamsla features fungerar, man kollar att dte som inte fanns innan inte skadats
+			Regretion = Gå bakåt (gamla som går i barndom), uppstpr när ngt somhar funkat slutar funkar (används ofta för buggtest)
+			Man fixar buggen...
+
+
+		FREDRIK PÅ TAVLAN:
+		- Unit Test/Enhetstest:
+			Testar fristående del av system
+			En klass - En funktion
+
+		- Intergration:
+			Testar hur delar fungerar ihop
+
+		- Regression Test:
+			Bug fixad
+			Funktion inte slutar fungera
+
+		- UAT
+			Kund accepterar att vi tolkat kraven rätt
+
+		- Load Test:
+			Simulera många samtidiga anväbndare
+			Kolla prestanda på systemet
+			StressTest/Perfance Test (för Load Test)
+
+		- DR (disaster recovery)/Recovery testing:
+			Testköra katastrofplaner
+
+		- System Test/End-to-end Test (systemtester):
+			Testa hela systemet (med db, api, andra system...)
+
+		- GUI-test:
+			Testa användargränssnitt
+
+		- Security Testing:
+			Hacking
+			OWASP TOP 10
+
+		- Aplpha/Beta:
+			Kundtesting
+			Testa i riktig miljö
+
+		- Accessability Testing:
+			WCAG
+			webbriktlinjer.se
+
+		- Browser COmpability Test:
+			Sträckad till GUI
+
+		- Backwaord COmpability TEstinG:
+		
+		- Usability Testing (sträck till accessability testing):
+			Användbarhetstest
+
+		- Smoke test:
+			Kollar att App/webb startar
+
+	2. VAD KAN MAN GÖRA SJÄLV?
+			Skriva tester för sin egen del
+
+		- STRATEGI:
+			Sätta upp fejkkod som sätter upp klassen och anroper den med parametrar. Ex gör en knapp han trycker på
+			Bygger ngt nytt: Startar programmet och kör lokalt. Hur testar nya funktion? Klickar på grejrna som ska funka
+			Andreas: Börjar med unittest, smådelar (tar mkt tid, men blir bra)
+			Fredrik: Skriver testknappar undertiden man utvecklar (varför inte bara göra unittest o se att resultatet bli rätt? Problem
+				allt sitter ihop i en soppa. Man kan mocka det eller sätta upp ett staket mellan gamla koden och den nya koden (med det nya)
+				Kan skapa ett interface med funktioner som används i klassen som knappen anropar. Han ändrar klassen han anvädner
+				och gör ett interface. På så sätt kan han fejka den
+
+			Bara för man går in i ett stort system så ska man inte ge upp. Man kan testa
+
+	3. FLER TYPER AV TEST:
+		- Load Test: Försöka se att systemet inte krashar om systemet blir belastat. Man har ett program som har 1000 användare. SImulera 
+				månag användare o se att systemet inte brinner upp
+			VAD UPPTÄCKER MAN OFTA NÄR MAN SKICKAR PÅ MASSA TRAFIK? 
+				Man hittar ofta oförber3edda beteenden. När det bara är jag som testar är inte samma som om det sen är flera hundra som testar
+				Ex att jag gör anrop till en funktion som gör anrop till db (jag visste inte det gick till db, då krashar det pga
+				alla pratar samtidigt med tabellen i db)
+				- Detta kan lasttester upptäcka
+
+				E-HANDEL: Många på drift och programmerare som stressar inför blackfriday pga mycket trafik kommer in samtidigt
+
+			StressTest/Perfance Test (för Load Test)
+
+		- Recovery testing/DR (disaster recovery): Testa byta server. Ett nätverkskort har brunnit. Servern som alla andra servrar använder
+			- Man kan ha en reservsever med samma inställningar, man kan byta över till dennna reservservern (men ngn hade tagit den o användt
+			 till ngt annat). De hade en plan till reserv servern (disaster recovery)
+
+			- SCANDIC: Har sepaarat miljö för bokning och ... med hjälp av dnserna kan man peka om trafiken till en helt annan datahall.
+			Är ex på en DR-plan.
+				
+			- SAS: Har inte alla sina servrar i en datahall så de har två datahallar. En server i varje hall. Då kan man ta ner den ena hallen
+				men ändå kunna sälja biljetter etc.
+				Vid driftsättningar driftsätterna man till en datahall och så flyttar man över trafiken
+
+		- System Test/End-to-end Test (systemtester):
+			Man testar hela systemet från början till slut. Registerar som anv ädnare, loggar in, köper biljett (hela kedjan)
+			Kanske produktiion, kanske testmiljö(????)
+			Är ofta manuellt
+			Med api, databaser, andra system (man testar hela kedjan av en process, end-to-end, från början till slut)
+
+
+		UNIT OCH INT: Testar koden direkt, jämför UI-test
+
+		- UI Test/(Browser TEst/Interface testing(???Han suddade)):
+			FInns olika typer av applikationer, ex har vi en consoleapp så har vi massa paraemtarar som ger ut massa text.. LÄtt att testa att
+			rätt kommer ut. Ex vår bankapp med Meny där man skriver in siffror.
+			
+			HUR TESTAR MAN BANKEN? Programmerar ett tangetbord, simulera tangerntbordet kan man enkelt köra programmet
+
+			HUR KOLLAR MAN DTE BLIR RÄTT MEd UI-TEST? Man får kolla elementet som kommer ut, texten som kommer ut, är saldo det förväntade
+			beloppet? Om man tar ut för mkt penagr kommer felmeddelande
+
+
+			DESKTOPPAPPLI: HUr programmerar man test av en desktop appli? Det finns program som ser var musen är. Huur gör vi som programmerar
+			när vi bygger en desktop app? - Vi gör drag and drop. När vi trycker på knapp- Hur hämtar vi ut värdena? Code behind (med namn på element)
+
+			SÅ HÄR TESTAR MAN:
+			Man utnyttjar namnen på elementen, klicka på textboxen som heter txtBox2 och skriv detta. Tryck på tabb, då hoppar den till nästa
+			textbox, eller gå till textbox3...
+				- KOlla det blir rätt: Leta efter en label på textbox formuläret, lite som end-to-end test men har göra man ett program som gör
+					Man kan ha en recorder(verktyg) som kollar vad jag skriver för texter o vad jag trycker på för knappar, den 
+					spelar in vd jag tryckt
+
+			WEBBAPPLIKATIONER: Man staratar en webläsare, firefox, man fjärrstyr navigator att gå till startsida o väntar på att sidan laddats,
+					När sidan laddats kan man använda id:n i html för att hitta element, samma som ij avascript föe att hitta ett element
+					Sen väntar man på att sidan laddas om och letar efter MyAccount o vet att man blivit inloggad
+			
+			Detta är olika typer av UI-test (GUI-Test (graphical...Test) Testar anvädnar gränssnitt
+				
+
+	4. FLER TYPER AV TEST:
+		- Interoperability Test: Lite av integration... EGi
+
+		- Behörighetstester: Vilka som har behörighet till olika vyer. Om fel på behörighetskontrollen så har jag fel på VAD i systemet?--SÄKERHETEN
+			Leder till Security Testing
+
+		- Secutiry testing: Kan jobba som hacker, eler rådgivare som jobbar med säkerhet. 
+			Här ingår OWASP TOP TEN (tio vanligaste säkerhetsprobelemen som finns när man granskar kod i applikationen, är en org som jobbar med säkerhet)
+			Man har en modul där admin kan skapa presentkort. Men kan skapa problem:
+				SAS: Kan skapa poäng
+
+			VÄRSTA HOT KOMMER IFRÅN VAD??: De anställda, vanligaste tjuvarna som utnyttjar systemet
+
+			VAD DET INNEHÅLLER:
+			Innefattar att man kollar att access blir denied om fel behörighet
+			Kodgranskring, granskar koden för fel
+			Att man automatiskt stoppar in skit i inputfälten för att se om det går igenom
+			Buffer Over...: Testar om systemet krashar på ett fint sätt eller får jag in massa data som sätts in i systemet och....
+
+
+		- ByggTest(??Namn):
+			Man testar produktionssittet, Man har olika miljörer man jobbar i ex produktionsmiljön, eller stagemiljö (genrepar driftsättningen),
+			QA-miljö,
+
+		- Alpha testing, Beta testing:
+			Beta: En miljö innan man släpper ut miljön så...
+			Är gamla termer, beta uppe i hörnet, sthlmsstadshemsida beta testing
+
+			BETA:
+			Handlar om att låta kudnerna testa en ny version av ett system. Brukar göras i produktionsmiljö
+			När man tycker projeketet är klart och man låter det möta verkligheten o se vad som händer (saker händer som man inte förvänata,
+			man får feedback)
+			Göra ofta i riktig miljö, i skarp miljö
+
+			Före beta kommer alpha:
+
+			ALPHA:
+			Testar innna realeaese, innan ngt är helt klart. Man testar intärnt, all test som kommer innan produkten är klar. Kanske låter en kund
+			testa innan man releasar
+
+		- Accessability Testing:
+			Funktionshinder... Handlar om att göra ett program möjligt att använda för personer som har hinder i sin förmåga att använda
+			verkligheten (tar bort glasögon, större text, bättre kontrast, aktivera ett kontrastläge (förstoring))
+			Funkar vårt program tillsammans med dessa funktioner(förstoring=
+			Köpa biobiljett om man inte ser alls, hur gör man då? FInns speciella webläsare som kan läsa upp. Man kan läsa upp allt som finns på skärmen¨
+			Ex får inte anvädna musen, hur gör man då?
+				Trycker tabb och så hoppar den i felordning
+
+			Text på en rödplatta med vittext på, svårt att läsa för ngn med dålig syn.
+			ZOomar så ändras inte texten till att bli störrre
+
+			Det är sådanna saker man testar i denna typ av textning, som har en checklista av krav: WCAG
+			Hemsida som finns: webbriktlinjer.se (här finns kraven, följer man html standar kommer man igenom mer än hälften av allt som är krav)
+			
+
+		- Browser Compatitbility Test:
+			Probelmet är mindre idag än det var för några år sen
+			VId webbutveckling
+			Handlar mkt om frontend
+			Hur många browsers finns?
+				Chrome(byggd så den uppdateras automatiskt, men finns också i mobiltelefoner, samsung..
+				firefox
+				internet explorer (installeras fortfarande med windows 10)
+				edge (bra)
+				safari(var länge med chrome den bästa, men sen gjordes ny av microsoft (edge).... nu är safari sämst. Allt är safari på iphone (safari är väldigt säker, svårt att göra attack mot safari)
+				opera
+
+			Ofta kan man koppla ihop, om man automatioserar o gör GUI-tester så är det inte så svårt att göra test för resp browser
+			Selenuim är ett ramverk för att fjärrstyra webbläsare. Seleniumhq.com. Genom att göra gui tester o sen köra för varje browser
+			så kan man verkligen testa att javascripten funkar i varje
+			EX i asien finns äldre hårdvara
+			Se till att man vet vilka webläsare man ska anvädna, bra tips att alltid kolla upp när man börjar med ett nytt projekt vilka webläsare
+			man ska kunna använda
+
+
+		- Backwaord COmpability TEstinG:
+			Jobabr man på (apple) är detta en mardröm
+			Man testar mot tidigare versioner(??)
+			Tänk att man gör en app nu på Windows10, kommer ngn med WIndows7 kunna köra appen? Hur tar man reda på det? Skaffar en dator med
+			windows7b o testa.. På operativssystemsnivå (istället för browser.. jämf broswer comp)
+			Man testar att gamla spel.. etc funkar (inte krashar)
+			IPHONE: Lite appar försvinner lite då och då, för den här funktionen slutar funkar vid uppdatering o då tar man bort hela appen istället
+			Med windows komemr en hel db med compabilitetsinställningar.. Om ngn startar en exe fil så finns tusentals knappar o spakar att dra i
+			man ändrar hur en bit ska tolkas, hela windows har massa if-satser och finns på och av switchar för när ngt finns i kompabilitetsprogrammet
+			ex ljuger att falsk info returneras för att programmet ska kunna startas
+
+		- Black Box Testing & White Box testing:
+			Termer man använder när man testar system
+			BLACK: Bryr sig inte om hur systemet ser ut inut i, kanske inte ens vet hur det ser ut. Har ett system men inte har tillgång till källkoden
+			Vet inte vad som finns inuti
+
+			GRAY/WhITE: Man ser hur systemet ser ut inuti. Ex unittesting är def whitebox testing (är inne i koden o har tillgång till källkoden)
+			Man har internaccess till systemet
+
+		- Usability Testing:
+			Närhet av accessability testing, lite släkt men väldigt olika betydelse
+			Hur enkelt det är att arbeta med en GUI: Ex när kodar måste man göra en GUI så ett barn ska kunna använda det
+			Om ett program går att använda utan att behöva läsa instruktioner så har man nått målet för att vara lättanvändt
+			En knapp ser alltid ut som en knapp, inte smart att göra en knapp platt (ska förstå att man ska trycka)
+			Svenskt företag som gör verktyg för bra usability: Ex man komemr till en studio som har en Itracker på skärmen som ser var jag är/tittar 
+			på skärmen, ex ICA var tittar jag på sidan, vilken väg går jag för o lägga saker i varukorgen. Detta är usability testing, användarbarhetstest
+			Annonsfiltrer (vi tittar inte i högra hörnet, man läser inte)
+
+		- Smoke test:
+			kommer från tiden när man testar hur en dator funka genom att "lukar den bra, brinner när man kopplar in saker?"
+			ANvänds när man startar en applokation o ser att den inte krashar, man "stoppar in sladden"/startar appen
+			Är ett test där man Man kollar att startsidan kommer upp o inte får felmeddelande, snabbt test. Ofta att man loggar in på mobilden o det kommer upp en bild
+			KOmbinerar ofta med monkeytest, man skriver lite i rutor bara lite hur som helst
+			
+
+		TEAM:
+			1. DEV TEAM:
+			2. TEST/QA Team: Så länge det är manuellt kan man använda testare
+			3. KUND:
+			4. Test-Developer (mellan testare och dev (ngn som ska testa och som kan programmera)
+			5. Security tester
+			6. Load/perf (kopplat till test/QA)
+								
+
+			Vilka av dessa uppgifter gör resp team?
+			- ENhetstester: Dev (utvecklarna) gör
+			- IntegrationsTester: Dev
+			- Accessability: QA
+			- Usability Testing: QA
+			- SystemTest/End-to-end: Ofta är det testteamet men kan vara..dev(??)
+			- Acceptanstest: Testteamet bör ha gjort ett test först och sen testar kunden om det är OK
+			- GUI-test: NÅgonstans mellan test och dev teamet. Kan ha testare som gör testerna manuellt, men kan automatisera med selenuim och 
+				då kanske man kanske måste ha kompenternser för detta som inte testarna har (då behöver man ha ngn form av kompentens som finns 
+				mitt emellan, testare som kan programmera (= finns ngt namn?? (kallar TestDeveloper))
+				Kan vara bra att anställa någon som skapar ett test (leder till testautomatisering) så slipper man betala för att ngn ska
+				göra det manuellt om och om igen
+				Har man inte en testutvecklare blir detta sällan gjort(?? vad??)
+			- Regression Test: Test/dev
+			- COmpabilittet: Test kan göra men behöver man gui så behövs dev
+			- Lasttesning: Brukar vara testteamet men behövs ofta spec kompentens (har specielliaster på lasttesting), ex ett externt förtetag 
+				som håller på med det här (Load/perf). Vissa lasttest kanske man programmerar in, att byggservern lägger in lite mer last
+				(blir lite dev ops över det hela)
+			- Security Testing: Måste vara duktiga testare och programmerare (kombination)
+
+		PRAKTISKT:
+			AppVeyor: Registera ett try-konto (14 dagar,nackademinmail). För att kunna göra tester. Kommer sen koppla ihop med github repo
+			Logga in med github-knapp
+
+			LABB: Med appVeyor och med AsherDevOps/VisualSTudioTeamServices
+			
+			APPVEYOR:
+			Är tjänst för contingous INtegration.
+			F5: Kompilerar och startar: Går att göra från kommandoraden också och det är då lätt att lägga på en server, msBild + namn på msFilen
+				och då har man testat att kompilera...(???)
+			TESTAUTO: Bygger testauto, och kör sen tester och ser att allt blir grönt. Annars fixar man det
+
+	4. SAMMANFATTNING:
+			
+			Det vi ska lära oss är automatisering av tester(efter lunch)	

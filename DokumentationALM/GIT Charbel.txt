@@ -2,3 +2,7 @@ GIT CHARBEL:
 
 Orgin: Localt
 Remote: DEt som finns på git
+
+Repo: lokalt/inte lokalt
+
+- OPen folder (hklicka souliton så finns ex .git)
